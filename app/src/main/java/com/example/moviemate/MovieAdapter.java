@@ -12,10 +12,16 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
+
     private List<Movie> movies;
+    private OnItemClickListener onItemClickListener;
 
     public MovieAdapter(List<Movie> movies) {
         this.movies = movies;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
     }
 
     @NonNull
@@ -28,9 +34,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
         Movie movie = movies.get(position);
-        holder.movieImageView.setImageResource(movie.getImageResource());
-        holder.movieTitleTextView.setText(movie.getTitle());
-        holder.movieDescriptionTextView.setText(movie.getDescription());
+        holder.titleTextView.setText(movie.getTitle());
+        holder.posterImageView.setImageResource(movie.getPoster());
     }
 
     @Override
@@ -38,16 +43,30 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHol
         return movies.size();
     }
 
-    public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        public ImageView movieImageView;
-        public TextView movieTitleTextView;
-        public TextView movieDescriptionTextView;
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
 
-        public MovieViewHolder(View view) {
-            super(view);
-            movieImageView = view.findViewById(R.id.movieImageView);
-            movieTitleTextView = view.findViewById(R.id.titleTextView);
-            movieDescriptionTextView = view.findViewById(R.id.descriptionTextView);
+    public class MovieViewHolder extends RecyclerView.ViewHolder {
+        private TextView titleTextView;
+        private ImageView posterImageView;
+
+        public MovieViewHolder(@NonNull View itemView) {
+            super(itemView);
+            titleTextView = itemView.findViewById(R.id.titleTextView);
+            posterImageView = itemView.findViewById(R.id.movieImageView);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (onItemClickListener != null) {
+                        int position = getAdapterPosition();
+                        if (position != RecyclerView.NO_POSITION) {
+                            onItemClickListener.onItemClick(position);
+                        }
+                    }
+                }
+            });
         }
     }
 }

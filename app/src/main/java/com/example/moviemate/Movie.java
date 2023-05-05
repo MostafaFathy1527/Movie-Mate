@@ -1,25 +1,40 @@
 package com.example.moviemate;
 
-public class Movie {
-    private String title;
-    private String description;
-    private int imageResource;
+import java.io.Serializable;
+import java.util.List;
 
-    public Movie(String title, String description, int imageResource) {
+public class Movie implements Serializable {
+    private String title;
+    private String synopsis;
+    private String releaseDate;
+    private int poster;
+    private List<String> cast;
+
+    public Movie(String title, String synopsis, String releaseDate, int poster, List<String> cast) {
         this.title = title;
-        this.description = description;
-        this.imageResource = imageResource;
+        this.synopsis = synopsis;
+        this.releaseDate = releaseDate;
+        this.poster = poster;
+        this.cast = cast;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getSynopsis() {
+        return synopsis;
     }
 
-    public int getImageResource() {
-        return imageResource;
+    public String getReleaseDate() {
+        return releaseDate;
+    }
+
+    public int getPoster() {
+        return poster;
+    }
+
+    public List<String> getCast() {
+        return cast;
     }
 }

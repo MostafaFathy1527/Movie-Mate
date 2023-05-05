@@ -24,6 +24,10 @@
             android:name=".MovieListActivity"
             android:label="Movie List">
         </activity>
+        <activity
+            android:name=".MovieDetailsActivity"
+            android:label="Movie Details">
+        </activity>
     </application>
 
 </manifest>
