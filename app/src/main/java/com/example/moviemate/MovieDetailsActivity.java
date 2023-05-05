@@ -37,7 +37,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         titleTextView.setText(selectedMovie.getTitle());
         releaseDateTextView.setText(selectedMovie.getReleaseDate());
         synopsisTextView.setText(selectedMovie.getSynopsis());
-        castTextView.setText(TextUtils.join(", ", selectedMovie.getCast()));
         posterImageView.setImageResource(selectedMovie.getPoster());
     }
+
 }

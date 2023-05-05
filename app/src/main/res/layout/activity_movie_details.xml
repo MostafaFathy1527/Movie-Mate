@@ -1,7 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp">
+    android:padding="16dp"
+    >
 
     <TextView
         android:id="@+id/titleTextView"
@@ -16,6 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/titleTextView"
+        android:textColor="@color/teal_200"
         android:textSize="16sp"/>
 
     <TextView
@@ -23,6 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/releaseDateTextView"
+        android:textColor="@color/teal_200"
+
         android:textSize="16sp"/>
 
     <TextView
@@ -30,6 +34,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/synopsisTextView"
+        android:textColor="@color/teal_200"
+
         android:textSize="16sp"/>
 
     <ImageView
@@ -37,6 +43,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/castTextView"
+        android:textColor="@color/teal_200"
+
         android:scaleType="fitCenter"/>
 
 </RelativeLayout>

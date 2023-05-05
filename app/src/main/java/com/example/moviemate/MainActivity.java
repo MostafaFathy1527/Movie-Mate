@@ -1,6 +1,8 @@
 package com.example.moviemate;
-
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    private GridView categoriesGrid;
+    private RecyclerView categoriesRecyclerView;
     private CategoryAdapter categoryAdapter;
     private List<Category> categories;
 
@@ -22,16 +24,23 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Initialize the GridView and its adapter
-        categoriesGrid = findViewById(R.id.categoriesGrid);
+        // Set up the RecyclerView and its adapter
+        categoriesRecyclerView = findViewById(R.id.categoriesRecyclerView);
         categories = getCategoryData();
         categoryAdapter = new CategoryAdapter(this, categories);
-        categoriesGrid.setAdapter(categoryAdapter);
+        categoriesRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        categoriesRecyclerView.setAdapter(categoryAdapter);
 
-        // Set an OnItemClickListener for the GridView
-        categoriesGrid.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        // Set the spacing between items in the RecyclerView
+        int spanCount = 2; // number of columns
+        int spacing = 16; // spacing between columns in pixels
+        boolean includeEdge = true; // include edge spacing
+        categoriesRecyclerView.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, includeEdge));
+
+        // Set an OnItemClickListener for the RecyclerView
+        categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+            public void onItemClick(int position) {
                 // Get the selected category from the clicked item
                 Category selectedCategory = categories.get(position);
 
@@ -41,6 +50,30 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        // Set up the featured movies section
+        List<Movie> featuredMovies = new ArrayList<>();
+        featuredMovies.add(new Movie("Movie 1", R.drawable.dark_knight_poster));
+        featuredMovies.add(new Movie("Movie 2", R.drawable.forrest_gump));
+        featuredMovies.add(new Movie("Movie 3", R.drawable.godfather_poster));
+
+        RecyclerView featuredRecyclerView = findViewById(R.id.featuredRecyclerView);
+        featuredRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        featuredRecyclerView.setAdapter(new FeaturedMoviesAdapter(featuredMovies));
+
+// Set up the top rated movies section
+        List<Movie> topRatedMovies = new ArrayList<>();
+        topRatedMovies.add(new Movie("Movie 1", R.drawable.dark_knight_poster, 4.5f));
+        topRatedMovies.add(new Movie("Movie 2", R.drawable.dark_knight_poster, 4.2f));
+        topRatedMovies.add(new Movie("Movie 3", R.drawable.dark_knight_poster, 4.0f));
+        topRatedMovies.add(new Movie("Movie 4", R.drawable.dark_knight_poster, 3.9f));
+        topRatedMovies.add(new Movie("Movie 5", R.drawable.dark_knight_poster, 3.8f));
+
+        RecyclerView topRatedRecyclerView = findViewById(R.id.topRatedRecyclerView);
+        TopRatedMoviesAdapter adapter = new TopRatedMoviesAdapter(this, topRatedMovies); // pass the context as the first argument
+        topRatedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        topRatedRecyclerView.setAdapter(adapter); // use the same adapter object created above
+
     }
 
     private List<Category> getCategoryData() {

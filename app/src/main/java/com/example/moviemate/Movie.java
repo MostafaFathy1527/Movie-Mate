@@ -9,13 +9,29 @@ public class Movie implements Serializable {
     private String releaseDate;
     private int poster;
     private List<String> cast;
-
-    public Movie(String title, String synopsis, String releaseDate, int poster, List<String> cast) {
+    private float rating;
+    public Movie(String title, int poster) {
         this.title = title;
         this.synopsis = synopsis;
         this.releaseDate = releaseDate;
         this.poster = poster;
-        this.cast = cast;
+
+    }
+    public Movie(String title, String synopsis, String releaseDate, int poster, float rating) {
+        this.title = title;
+        this.synopsis = synopsis;
+        this.releaseDate = releaseDate;
+        this.poster = poster;
+        this.rating = rating;
+    }
+
+    public Movie(String title, int poster, float rating) {
+        this.title = title;
+        this.poster = poster;
+    }
+
+    public float getRating() {
+        return rating;
     }
 
     public String getTitle() {

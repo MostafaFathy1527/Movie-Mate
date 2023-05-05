@@ -23,7 +23,7 @@ public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.Movi
     private final MovieClickListener mMovieClickListener;
 
     // Add a constructor that accepts a List of movies and a MovieClickListener
-    public MovieListAdapter(List<Movie> movies, MovieClickListener movieClickListener) {
+    public MovieListAdapter(MovieListActivity movieListActivity, List<Movie> movies, MovieClickListener movieClickListener) {
         mMovies = movies;
         mMovieClickListener = movieClickListener;
     }
