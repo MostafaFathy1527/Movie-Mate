@@ -59,6 +59,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         ratingTextView.setText((int) selectedMovie.getRating()+"/5 Stars");
         catTextView.setText("Category: "+selectedMovie.getCategory());
 
+        Button backbtn = (Button) findViewById(R.id.BackBtn);
+        Button remindbtn = (Button) findViewById(R.id.button);
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
