@@ -96,8 +96,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Filter the categories by the search query
-                filterCategories(query);
+
+                Intent intent = new Intent(getApplicationContext(), SearchResultsActivity.class);
+                String SearchedMovie = searchView.getQuery().toString().toLowerCase();
+                intent.putExtra("name", SearchedMovie);
+                startActivity(intent);
                 return true;
+
             }
 
             @Override
