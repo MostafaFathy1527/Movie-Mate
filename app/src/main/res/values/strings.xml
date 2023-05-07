@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Movie Mate</string>
-    <string name="movie_poster">Movie Poster</string>
+    <string name="movie_poster" translatable="false">Movie Poster</string>
+    <string name="categories">Categories</string>
+    <string name="featured_movies">Featured Movies</string>
+    <string name="top_rated_movies">Top Rated Movies</string>
+    <string name="search">Search for movies</string>
 </resources>
