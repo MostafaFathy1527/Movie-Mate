@@ -49,7 +49,7 @@ public class SearchResultsActivity extends AppCompatActivity {
             imageView.setImageResource(imageResource);
         }
 
-
+      //thisd is a tmkl;serjyhgjklndfjklgh;dfkl;jnhjkndf
 
     }
 
