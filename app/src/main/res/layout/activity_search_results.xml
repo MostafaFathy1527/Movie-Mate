@@ -11,8 +11,7 @@
         android:text="Search Results"
         android:textSize="24sp"
         android:textStyle="bold"
-        android:padding="16dp"
-        />
+        android:padding="16dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_results_list"
