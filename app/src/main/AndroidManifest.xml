@@ -30,6 +30,12 @@
             android:label="Movie Details">
         </activity>
 
+
+
+        <activity
+            android:name=".SearchResultsActivity"
+            android:label="search List">
+        </activity>
     </application>
 
 </manifest>

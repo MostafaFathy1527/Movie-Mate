@@ -29,22 +29,13 @@
 
         android:textSize="16sp"/>
 
-    <TextView
-        android:id="@+id/castTextView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/synopsisTextView"
-        android:textColor="@color/teal_200"
 
-        android:textSize="16sp"/>
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/posterImageView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/castTextView"
-        android:textColor="@color/teal_200"
-
-        android:scaleType="fitCenter"/>
-
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
+        android:src="@drawable/die_hard_poster" />
 </RelativeLayout>

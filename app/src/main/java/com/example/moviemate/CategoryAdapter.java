@@ -9,17 +9,20 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
-
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     private Context context;
     private List<Category> categories;
+    private List<Category> originalCategories;
     private OnItemClickListener listener;
 
     public CategoryAdapter(Context context, List<Category> categories) {
         this.context = context;
         this.categories = categories;
+        this.originalCategories = new ArrayList<>(categories); // make a copy of the original data
     }
+
 
     public void setOnItemClickListener(OnItemClickListener listener) {
         this.listener = listener;
@@ -68,5 +71,13 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             categoryImage = itemView.findViewById(R.id.categoryImageView);
             categoryName = itemView.findViewById(R.id.categoryNameTextView);
         }
+    }
+    public void filter(List<Category> filteredCategories) {
+        if (filteredCategories == null) {
+            categories = originalCategories;
+        } else {
+            categories = filteredCategories;
+        }
+        notifyDataSetChanged();
     }
 }

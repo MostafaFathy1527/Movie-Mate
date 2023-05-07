@@ -2,42 +2,49 @@ package com.example.moviemate;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.ImageView;
+import android.util.Log;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.core.content.ContextCompat;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
 
 public class MovieDetailsActivity extends AppCompatActivity {
-
-    private TextView titleTextView;
-    private TextView releaseDateTextView;
-    private TextView synopsisTextView;
-    private TextView castTextView;
-    private ImageView posterImageView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
-        // Get the selected movie from the intent that started this activity
-        Intent intent = getIntent();
-        Movie selectedMovie = (Movie) intent.getSerializableExtra("movie");
+        // Get the selected movie from the intent extras
+        Movie movie = getIntent().getParcelableExtra("movie");
 
-        // Initialize the views in the activity layout
-        titleTextView = findViewById(R.id.titleTextView);
-        releaseDateTextView = findViewById(R.id.releaseDateTextView);
-        synopsisTextView = findViewById(R.id.synopsisTextView);
-        castTextView = findViewById(R.id.castTextView);
-        posterImageView = findViewById(R.id.posterImageView);
+        // Log the retrieved movie
+        Log.d("MovieDetailsActivity", "Retrieved movie: " + movie.getTitle());
 
-        // Set the text content and image for each view
-        titleTextView.setText(selectedMovie.getTitle());
-        releaseDateTextView.setText(selectedMovie.getReleaseDate());
-        synopsisTextView.setText(selectedMovie.getSynopsis());
-        posterImageView.setImageResource(selectedMovie.getPoster());
+        // Set the movie details in the UI
+        AppCompatImageView posterImageView = findViewById(R.id.posterImageView);
+        TextView titleTextView = findViewById(R.id.titleTextView);
+        TextView releaseDateTextView = findViewById(R.id.releaseDateTextView);
+        TextView synopsisTextView = findViewById(R.id.synopsisTextView);
+
+        Log.d("MovieDetailsActivity", "Setting poster image");
+        Drawable posterDrawable = AppCompatResources.getDrawable(this, movie.getPoster());
+        posterImageView.setImageDrawable(posterDrawable);
+
+        Log.d("MovieDetailsActivity", "Setting title");
+        titleTextView.setText(movie.getTitle());
+
+        Log.d("MovieDetailsActivity", "Setting release date");
+        releaseDateTextView.setText(movie.getReleaseDate());
+
+        Log.d("MovieDetailsActivity", "Setting synopsis");
+        synopsisTextView.setText(movie.getSynopsis());
     }
-
 }

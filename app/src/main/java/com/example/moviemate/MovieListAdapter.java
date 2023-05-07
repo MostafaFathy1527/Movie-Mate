@@ -1,6 +1,7 @@
 package com.example.moviemate;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,69 +12,72 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-
 public class MovieListAdapter extends RecyclerView.Adapter<MovieListAdapter.MovieViewHolder> {
-    private List<Movie> mMovies;
 
-    // Define a MovieClickListener interface
-    public interface MovieClickListener {
-        void onMovieClick(int position);
-    }
+    private Context context;
+    private List<Movie> movies;
+    private MovieClickListener clickListener;
 
-    // Add a MovieClickListener field to the adapter
-    private final MovieClickListener mMovieClickListener;
-
-    // Add a constructor that accepts a List of movies and a MovieClickListener
-    public MovieListAdapter(MovieListActivity movieListActivity, List<Movie> movies, MovieClickListener movieClickListener) {
-        mMovies = movies;
-        mMovieClickListener = movieClickListener;
+    public MovieListAdapter(Context context, List<Movie> movies, MovieClickListener clickListener) {
+        this.context = context;
+        this.movies = movies;
+        this.clickListener = clickListener;
     }
 
     @NonNull
     @Override
     public MovieViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_list_item, parent, false);
-        return new MovieViewHolder(view);
+        View view = LayoutInflater.from(context).inflate(R.layout.movie_list_item, parent, false);
+        return new MovieViewHolder(view, clickListener);
     }
 
     @Override
     public void onBindViewHolder(@NonNull MovieViewHolder holder, int position) {
-        // Get the movie at the given position
-        Movie movie = mMovies.get(position);
-
-        // Set the movie poster, title, release date, and synopsis in the ViewHolder views
-        holder.posterImageView.setImageResource(movie.getPoster());
-        holder.titleTextView.setText(movie.getTitle());
-        holder.releaseDateTextView.setText(movie.getReleaseDate());
-        holder.synopsisTextView.setText(movie.getSynopsis());
-
-        // Set the click listener for the item view
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Call the onMovieClick method of the MovieClickListener interface
-                mMovieClickListener.onMovieClick(position);
-            }
-        });
+        Movie movie = movies.get(position);
+        holder.bindData(movie);
     }
 
     @Override
     public int getItemCount() {
-        return mMovies.size();
+        return movies.size();
     }
 
-    public static class MovieViewHolder extends RecyclerView.ViewHolder {
-        ImageView posterImageView;
-        TextView titleTextView;
-        TextView releaseDateTextView;
-        TextView synopsisTextView;
+    public static class MovieViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView titleTextView;
+        private TextView releaseDateTextView;
+        private TextView synopsisTextView;
+        private ImageView posterImageView;
+        private MovieClickListener clickListener;
 
-        public MovieViewHolder(View itemView) {
+        public MovieViewHolder(@NonNull View itemView, MovieClickListener clickListener) {
             super(itemView);
-            posterImageView = itemView.findViewById(R.id.posterImageView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
             releaseDateTextView = itemView.findViewById(R.id.releaseDateTextView);
             synopsisTextView = itemView.findViewById(R.id.synopsisTextView);
+            posterImageView = itemView.findViewById(R.id.posterImageView);
+            this.clickListener = clickListener;
+
+            // Set the click listener for the item view
+            itemView.setOnClickListener(this);
         }
+
+        // Bind the data to the ViewHolder
+        public void bindData(Movie movie) {
+            titleTextView.setText(movie.getTitle());
+            releaseDateTextView.setText(movie.getReleaseDate());
+            synopsisTextView.setText(movie.getSynopsis());
+            posterImageView.setImageResource(movie.getPoster());
+        }
+
+        // Handle clicks on the item view
+        @Override
+        public void onClick(View v) {
+            // Call the onMovieClick method of the click listener with the position of the clicked item
+            clickListener.onMovieClick(getAdapterPosition());
+        }
+    }
+
+    public interface MovieClickListener {
+        void onMovieClick(int position);
     }
 }

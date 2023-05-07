@@ -1,5 +1,7 @@
 package com.example.moviemate;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,14 +12,20 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
-
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
 
     private List<Movie> movies;
     private OnItemClickListener onItemClickListener;
+    private String sortOrder;
 
-    public MovieAdapter(List<Movie> movies) {
+    public MovieAdapter(Context context, List<Movie> movies) {
         this.movies = movies;
+
+        // Get the shared preferences file
+        SharedPreferences prefs = context.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+
+        // Get the sorting preference from the shared preferences file
+        sortOrder = prefs.getString("sort_order", "rating");
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
