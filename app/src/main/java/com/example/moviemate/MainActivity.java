@@ -14,15 +14,6 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.util.Log;
-import androidx.appcompat.app.AppCompatActivity;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,10 +31,6 @@ public class MainActivity extends AppCompatActivity {
     private CategoryAdapter categoryAdapter;
     private List<Category> categories;
     private List<Category> originalCategories;
-
-    private DarkModeReceiver receiver;
-
-    private static final String TAG = "MyActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,12 +105,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-        // Register the receiver in your activity or fragment
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
-        receiver = new DarkModeReceiver();
-        registerReceiver(receiver, filter);
-
             @Override
             public boolean onQueryTextChange(String newText) {
                 // Filter the categories by the search query
@@ -147,30 +128,6 @@ public class MainActivity extends AppCompatActivity {
         return categories;
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        // Unregister the receiver when the activity is destroyed
-        unregisterReceiver(receiver);
-    }
-
-    public class DarkModeReceiver extends BroadcastReceiver {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
-                int uiMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-                switch (uiMode) {
-                    case Configuration.UI_MODE_NIGHT_NO:
-                        // Light mode
-                        Log.d(TAG, "light");
-                        break;
-                    case Configuration.UI_MODE_NIGHT_YES:
-                        // Dark mode
-                        Log.d(TAG, "dark");
-                        break;
-                }
-            }
-        }
     // Get the featured movies
     private List<Movie> getFeaturedMovies() {
         List<Movie> featuredMovies = new ArrayList<>();
