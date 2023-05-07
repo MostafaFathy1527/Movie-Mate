@@ -8,12 +8,9 @@ public class Movie implements Serializable {
     private String synopsis;
     private String releaseDate;
     private int poster;
-    private List<String> cast;
     private float rating;
     public Movie(String title, int poster) {
         this.title = title;
-        this.synopsis = synopsis;
-        this.releaseDate = releaseDate;
         this.poster = poster;
 
     }
@@ -28,6 +25,7 @@ public class Movie implements Serializable {
     public Movie(String title, int poster, float rating) {
         this.title = title;
         this.poster = poster;
+        this.rating = rating;
     }
 
     public float getRating() {
@@ -50,7 +48,5 @@ public class Movie implements Serializable {
         return poster;
     }
 
-    public List<String> getCast() {
-        return cast;
-    }
+
 }
