@@ -189,24 +189,24 @@ public class MainActivity extends AppCompatActivity {
     // Get the category data
     private List<Category> getCategoryData() {
         List<Category> categories = new ArrayList<>();
-        categories.add(new Category("Action", R.drawable.dark_knight_poster));
-        categories.add(new Category("Drama", R.drawable.dark_knight_poster));
-        categories.add(new Category("Comedy", R.drawable.dark_knight_poster));
-        categories.add(new Category("Horror", R.drawable.dark_knight_poster));
-        categories.add(new Category("Science Fiction", R.drawable.dark_knight_poster));
-        categories.add(new Category("Thriller", R.drawable.dark_knight_poster));
-        categories.add(new Category("Romance", R.drawable.dark_knight_poster));
-        categories.add(new Category("Animation", R.drawable.dark_knight_poster));
+        categories.add(new Category("Action", R.drawable.action));
+        categories.add(new Category("Drama", R.drawable.drama));
+        categories.add(new Category("Comedy", R.drawable.comedy));
+        categories.add(new Category("Horror", R.drawable.horror));
+        categories.add(new Category("Science Fiction", R.drawable.sciencefction));
+        categories.add(new Category("Thriller", R.drawable.thriller));
+        categories.add(new Category("Romance", R.drawable.romance));
+        categories.add(new Category("Animation", R.drawable.up));
         return categories;
     }
 
     // Get the featured movies
     private List<Movie> getFeaturedMovies() {
         List<Movie> featuredMovies = new ArrayList<>();
-        featuredMovies.add(new Movie("The Godfather", "Crime", "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.", R.drawable.the_godfather));
-        featuredMovies.add(new Movie("The Shawshank Redemption", "Drama", "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.", R.drawable.shawshank_redemption_poster));
-        featuredMovies.add(new Movie("The Dark Knight", "Action", "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.", R.drawable.dark_knight_poster));
-        featuredMovies.add(new Movie("Forrest Gump", "Drama", "The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate, and other history unfold through the perspective of an Alabama man with an IQ of 75.", R.drawable.forrest_gump_poster));
+        featuredMovies.add(new Movie("The Godfather", "Crime", "The aging patriarch of an organized crime dynasty transfers control of his clandestine empire to his reluctant son.", R.drawable.the_godfather,5f));
+        featuredMovies.add(new Movie("The Shawshank Redemption", "Drama", "Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.", R.drawable.shawshank_redemption_poster,5f));
+        featuredMovies.add(new Movie("The Dark Knight", "Action", "When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.", R.drawable.dark_knight_poster,5f));
+        featuredMovies.add(new Movie("Forrest Gump", "Drama", "The presidencies of Kennedy and Johnson, the events of Vietnam, Watergate, and other history unfold through the perspective of an Alabama man with an IQ of 75.", R.drawable.forrest_gump_poster,5f));
         return featuredMovies;
     }
 

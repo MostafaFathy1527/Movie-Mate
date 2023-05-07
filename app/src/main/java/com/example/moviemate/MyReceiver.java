@@ -18,11 +18,11 @@ public class MyReceiver extends BroadcastReceiver {
         boolean isConnected = activeNetworkInfo != null && activeNetworkInfo.isConnected();
         if (isConnected) {
             Log.d("farah","done");
-            Toast.makeText(context, "Hello Javatpoint", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "you are connected", Toast.LENGTH_SHORT).show();
         }
         else{
             Log.d("farah","out");
-            Toast.makeText(context, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "your internet connection is lost", Toast.LENGTH_SHORT).show();
 
         }
 

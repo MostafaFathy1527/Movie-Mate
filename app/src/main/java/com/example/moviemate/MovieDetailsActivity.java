@@ -6,6 +6,7 @@ import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.text.TextUtils;
@@ -49,7 +50,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         catTextView = findViewById(R.id.Category);
         Button backbtn = (Button) findViewById(R.id.BackBtn);
         Button remindbtn = (Button) findViewById(R.id.button);
-
+        Button browserbtn = (Button) findViewById(R.id.open_browser_button);
 
         // Set the text content and image for each view
         titleTextView.setText(selectedMovie.getTitle());
@@ -58,9 +59,6 @@ public class MovieDetailsActivity extends AppCompatActivity {
         posterImageView.setImageResource(selectedMovie.getPoster());
         ratingTextView.setText((int) selectedMovie.getRating()+"/5 Stars");
         catTextView.setText("Category: "+selectedMovie.getCategory());
-
-        Button backbtn = (Button) findViewById(R.id.BackBtn);
-        Button remindbtn = (Button) findViewById(R.id.button);
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,5 +88,15 @@ public class MovieDetailsActivity extends AppCompatActivity {
                 nScheduler.schedule(myJobInfo);
 
             } });
+        browserbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String encodedMovieName = Uri.encode(selectedMovie.getTitle().replace(" ", ""));
+                String imdbUrl = "https://www.imdb.com/find?q=" + encodedMovieName + "&s=tt";
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(imdbUrl));
+                startActivity(intent);
+            }
+        });
     }
+
 }

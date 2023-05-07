@@ -31,6 +31,7 @@ public class FeaturedMoviesAdapter extends RecyclerView.Adapter<FeaturedMoviesAd
         Movie movie = movies.get(position);
         holder.titleTextView.setText(movie.getTitle());
         holder.posterImageView.setImageResource(movie.getPoster());
+        holder.ratingTextView.setText((int) movie.getRating());
     }
 
     @Override
@@ -42,10 +43,14 @@ public class FeaturedMoviesAdapter extends RecyclerView.Adapter<FeaturedMoviesAd
         public ImageView posterImageView;
         public TextView titleTextView;
 
+        public TextView ratingTextView;
+
         public ViewHolder(View itemView) {
             super(itemView);
             posterImageView = itemView.findViewById(R.id.movieImageView);
             titleTextView = itemView.findViewById(R.id.titleTextView);
+            ratingTextView = itemView.findViewById(R.id.Rating);
+
         }
     }
 }

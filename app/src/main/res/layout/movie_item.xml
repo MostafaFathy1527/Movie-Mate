@@ -30,10 +30,11 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/descriptionTextView"
+            android:id="@+id/Rating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="@color/teal_700"
+            android:text="5/5 stars"
             android:textSize="14sp" />
 
     </LinearLayout>
