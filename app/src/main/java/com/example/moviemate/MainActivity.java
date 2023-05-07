@@ -11,6 +11,15 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.os.Bundle;
+import android.util.Log;
+import androidx.appcompat.app.AppCompatActivity;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +27,10 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView categoriesRecyclerView;
     private CategoryAdapter categoryAdapter;
     private List<Category> categories;
+
+    private DarkModeReceiver receiver;
+
+    private static final String TAG = "MyActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,6 +87,12 @@ public class MainActivity extends AppCompatActivity {
         topRatedRecyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         topRatedRecyclerView.setAdapter(adapter); // use the same adapter object created above
 
+        // Register the receiver in your activity or fragment
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_CONFIGURATION_CHANGED);
+        receiver = new DarkModeReceiver();
+        registerReceiver(receiver, filter);
+
     }
 
     private List<Category> getCategoryData() {
@@ -85,5 +104,31 @@ public class MainActivity extends AppCompatActivity {
         categories.add(new Category("Horror", R.drawable.horror));
         categories.add(new Category("Romance", R.drawable.romance));
         return categories;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        // Unregister the receiver when the activity is destroyed
+        unregisterReceiver(receiver);
+    }
+
+    public class DarkModeReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(Intent.ACTION_CONFIGURATION_CHANGED)) {
+                int uiMode = context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
+                switch (uiMode) {
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        // Light mode
+                        Log.d(TAG, "light");
+                        break;
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        // Dark mode
+                        Log.d(TAG, "dark");
+                        break;
+                }
+            }
+        }
     }
 }

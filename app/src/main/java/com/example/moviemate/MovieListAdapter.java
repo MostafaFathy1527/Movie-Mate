@@ -1,5 +1,6 @@
 package com.example.moviemate;
 
+import android.annotation.SuppressLint;
 import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
