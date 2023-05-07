@@ -1,50 +1,91 @@
 package com.example.moviemate;
 
 import android.annotation.SuppressLint;
+import android.app.job.JobInfo;
+import android.app.job.JobScheduler;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.text.TextUtils;
-import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.content.res.AppCompatResources;
-import androidx.appcompat.widget.AppCompatImageView;
-import androidx.core.content.ContextCompat;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.core.graphics.drawable.DrawableCompat;
 
 public class MovieDetailsActivity extends AppCompatActivity {
 
+    private TextView titleTextView;
+    private TextView releaseDateTextView;
+    private TextView synopsisTextView;
+    private TextView castTextView;
+    private ImageView posterImageView;
+
+    private TextView ratingTextView;
+    private  TextView catTextView;
+
+    private JobScheduler nScheduler;
+    private static final int JOB_ID=0;
+    @SuppressLint("SetTextI18n")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_details);
 
-        // Get the selected movie from the intent extras
-        Movie movie = getIntent().getParcelableExtra("movie");
+        // Get the selected movie from the intent that started this activity
+        Intent intent = getIntent();
+        Movie selectedMovie = (Movie) intent.getSerializableExtra("movie");
 
-        // Log the retrieved movie
-        Log.d("MovieDetailsActivity", "Retrieved movie: " + movie.getTitle());
+        // Initialize the views in the activity layout
+        titleTextView = findViewById(R.id.titleTextView);
+        releaseDateTextView = findViewById(R.id.releaseDateTextView);
+        synopsisTextView = findViewById(R.id.synopsisTextView);
+        posterImageView = findViewById(R.id.posterImageView);
+        ratingTextView = findViewById(R.id.Rating);
+        catTextView = findViewById(R.id.Category);
 
-        // Set the movie details in the UI
-        AppCompatImageView posterImageView = findViewById(R.id.posterImageView);
-        TextView titleTextView = findViewById(R.id.titleTextView);
-        TextView releaseDateTextView = findViewById(R.id.releaseDateTextView);
-        TextView synopsisTextView = findViewById(R.id.synopsisTextView);
 
-        Log.d("MovieDetailsActivity", "Setting poster image");
-        Drawable posterDrawable = AppCompatResources.getDrawable(this, movie.getPoster());
-        posterImageView.setImageDrawable(posterDrawable);
+        // Set the text content and image for each view
+        titleTextView.setText(selectedMovie.getTitle());
+        releaseDateTextView.setText(selectedMovie.getReleaseDate());
+        synopsisTextView.setText(selectedMovie.getSynopsis());
+        posterImageView.setImageResource(selectedMovie.getPoster());
+        ratingTextView.setText((int) selectedMovie.getRating()+"/5 Stars");
+        catTextView.setText("Category: "+selectedMovie.getCategory());
+        Button backbtn = (Button) findViewById(R.id.BackBtn);
+        Button remindbtn = (Button) findViewById(R.id.button);
+        backbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Context context = getBaseContext();
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
-        Log.d("MovieDetailsActivity", "Setting title");
-        titleTextView.setText(movie.getTitle());
 
-        Log.d("MovieDetailsActivity", "Setting release date");
-        releaseDateTextView.setText(movie.getReleaseDate());
 
-        Log.d("MovieDetailsActivity", "Setting synopsis");
-        synopsisTextView.setText(movie.getSynopsis());
+
+        remindbtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(getApplicationContext(), "You'll be reminded when movie start", Toast.LENGTH_SHORT);
+                toast.show();
+
+                JobScheduler nScheduler = (JobScheduler) getSystemService(JOB_SCHEDULER_SERVICE);
+                ComponentName serviceName=new ComponentName(getPackageName(),ReminderJobService.class.getName());
+                JobInfo.Builder builder=new JobInfo.Builder(JOB_ID,serviceName);
+                PersistableBundle bundle = new PersistableBundle();
+                bundle.putString("MovieTitle", titleTextView.getText().toString());
+                JobInfo myJobInfo = new JobInfo.Builder(1, serviceName)
+                        .setExtras(bundle)
+                        .build();
+                nScheduler.schedule(myJobInfo);
+
+            } });
     }
 }

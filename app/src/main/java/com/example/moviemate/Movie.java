@@ -11,7 +11,7 @@ import android.util.Log;
 
 import java.util.List;
 
-public class Movie implements Parcelable {
+public class Movie implements Serializable {
     private String title;
     private String synopsis;
     private String releaseDate;
@@ -50,12 +50,20 @@ public class Movie implements Parcelable {
         this.poster = poster;
         this.rating = rating;
     }
+    public Movie(String title, String synopsis, String releaseDate, int poster, float rating,String category) {
+        this.title = title;
+        this.synopsis = synopsis;
+        this.releaseDate = releaseDate;
+        this.poster = poster;
+        this.rating = rating;
+        this.category= category;
+    }
 
     public Movie(String title, int poster, float rating) {
         this.title = title;
         this.poster = poster;
     }
-    public static final Creator<Movie> CREATOR = new Creator<Movie>() {
+    public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {
         @Override
         public Movie createFromParcel(Parcel in) {
             return new Movie(in);
@@ -123,19 +131,7 @@ public class Movie implements Parcelable {
         this.rating = rating;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(title);
-        dest.writeString(synopsis);
-        dest.writeString(releaseDate);
-        dest.writeInt(poster);
-        dest.writeStringList(cast);
-        dest.writeString(category);
-        dest.writeFloat(rating);
-    }
+
+
 }
