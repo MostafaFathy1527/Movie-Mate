@@ -20,6 +20,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
     TextView name;
     ImageView imageView;
+    ImageView nfound;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +34,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         name = findViewById(R.id.moviename);
         imageView = findViewById(R.id.poster);
+        nfound = findViewById(R.id.nfound);
 
         name.setText(movieName);
 
@@ -41,7 +43,7 @@ public class SearchResultsActivity extends AppCompatActivity {
 
         if (imageResource == 0) {
             Toast.makeText(this,  movieName + " not found " , Toast.LENGTH_SHORT).show();
-            imageView.setImageResource(R.drawable.notfound);
+            nfound.setImageResource(R.drawable.notfound);
             name.setVisibility(View.INVISIBLE);
         } else {
             imageView.setImageResource(imageResource);

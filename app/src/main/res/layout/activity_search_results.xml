@@ -15,21 +15,27 @@
         android:textSize="24sp"
         android:textStyle="bold" />
 
+    <ImageView
+        android:id="@+id/poster"
+        android:layout_width="168dp"
+        android:layout_height="149dp"
+        android:layout_gravity="center_horizontal" />
+
     <TextView
         android:id="@+id/moviename"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:padding="16dp"
         android:text="Movie name"
         android:textSize="24sp"
         android:textStyle="bold" />
 
     <ImageView
-        android:id="@+id/poster"
-        android:layout_width="200dp"
-        android:layout_height="300dp"
-        android:layout_gravity="center_horizontal"
-        android:paddingTop="16dp" />
+        android:id="@+id/nfound"
+        android:layout_width="285dp"
+        android:layout_height="282dp"
+        android:layout_gravity="center_horizontal" />
 
 
 </LinearLayout>
