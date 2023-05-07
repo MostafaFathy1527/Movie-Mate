@@ -16,6 +16,7 @@ public class Movie implements Parcelable {
     private String synopsis;
     private String releaseDate;
     private int poster;
+
     private List<String> cast;
     private String category;
 
@@ -24,6 +25,7 @@ public class Movie implements Parcelable {
 
     public Movie(String title,String category, String synopsis,  String releaseDate, int poster) {
         this.title = title;
+
         this.category = category;
         this.synopsis = synopsis;
         this.releaseDate = releaseDate;
@@ -54,6 +56,7 @@ public class Movie implements Parcelable {
     public Movie(String title, int poster, float rating) {
         this.title = title;
         this.poster = poster;
+        this.rating = rating;
     }
     public static final Creator<Movie> CREATOR = new Creator<Movie>() {
         @Override
@@ -83,6 +86,7 @@ public class Movie implements Parcelable {
         Log.d("Movie", "Getting poster for " + title + " with ID " + poster);
         return poster;
     }
+
     public List<String> getCast() {
         return cast;
     }
