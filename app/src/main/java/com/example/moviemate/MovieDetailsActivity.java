@@ -47,6 +47,8 @@ public class MovieDetailsActivity extends AppCompatActivity {
         posterImageView = findViewById(R.id.posterImageView);
         ratingTextView = findViewById(R.id.Rating);
         catTextView = findViewById(R.id.Category);
+        Button backbtn = (Button) findViewById(R.id.BackBtn);
+        Button remindbtn = (Button) findViewById(R.id.button);
 
 
         // Set the text content and image for each view
@@ -56,8 +58,7 @@ public class MovieDetailsActivity extends AppCompatActivity {
         posterImageView.setImageResource(selectedMovie.getPoster());
         ratingTextView.setText((int) selectedMovie.getRating()+"/5 Stars");
         catTextView.setText("Category: "+selectedMovie.getCategory());
-        Button backbtn = (Button) findViewById(R.id.BackBtn);
-        Button remindbtn = (Button) findViewById(R.id.button);
+
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
