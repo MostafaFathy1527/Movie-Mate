@@ -37,7 +37,6 @@ public class MovieListActivity extends AppCompatActivity implements MovieListAda
     private List<Movie> getMoviesForCategory(String category) {
         List<Movie> movies = new ArrayList<>();
 
-        // TODO: Replace this with your own implementation to retrieve the list of movies for the selected category
         switch (category) {
             case "Action":
                 movies.add(new Movie("The Matrix", "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.","1999", R.drawable.the_matrix,4));
