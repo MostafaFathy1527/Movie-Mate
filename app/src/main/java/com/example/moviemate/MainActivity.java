@@ -1,26 +1,31 @@
 package com.example.moviemate;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,8 +44,23 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
+        loadLocale();
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle(getResources().getString(R.string.app_name));
+
         setContentView(R.layout.activity_main);
+        Button lang=(Button) findViewById(R.id.langbtn);
+        lang.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d("lang btn","clicker");
+                showChangeLangDialog();
+            }
+        });
+
+
         MyReceiver = new MyReceiver();
 
         // Initialize views
@@ -76,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
         categoryAdapter.setOnItemClickListener(new CategoryAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(int position) {
+                Log.d("lan btn","clicked");
                 // Get the selected category from the clicked item
                 Category selectedCategory = categories.get(position);
 
@@ -125,6 +146,44 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(MyReceiver);
+    }
+    private void showChangeLangDialog(){
+        final String [] listItems= {"English","arabic"};
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(MainActivity.this);
+        mBuilder.setTitle("Choose a Language. . .");
+        mBuilder.setSingleChoiceItems( listItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if(i==0){
+                    setLocale("en");
+                    recreate();
+                }
+               else if(i==1){
+                    setLocale("ar");
+                    recreate();
+                }
+                dialogInterface.dismiss();
+
+            }
+        });
+        AlertDialog mDialog = mBuilder.create();
+        mDialog.show();
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale= locale;
+        getBaseContext().getResources().updateConfiguration(config,getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor= getSharedPreferences("settings",MODE_PRIVATE).edit();
+        editor.putString("My_lang",lang);
+        editor.apply();
+    }
+    public void loadLocale(){
+        SharedPreferences prefs = getSharedPreferences("settings", Activity.MODE_PRIVATE);
+        String lang=prefs.getString("My_lang","");
+        setLocale(lang);
     }
 
     // Get the category data
