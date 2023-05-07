@@ -1,8 +1,15 @@
 package com.example.moviemate;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,15 +26,24 @@ public class MovieListActivity extends AppCompatActivity implements MovieListAda
     private RecyclerView movieListRecyclerView;
     private List<Movie> movies = new ArrayList<>();
     private MovieListAdapter movieAdapter;
+    private SharedPreferences sharedPreferences;
+
+    private String sortOrder;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_list_activity);
-
-        // Get the selected category from the intent that started this activity
         Intent intent = getIntent();
         String category = intent.getStringExtra("category");
+
+        // Initialize SharedPreferences
+        sharedPreferences = getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        sortOrder = sharedPreferences.getString("sort_order", "rating");
+        Log.i("SORT ORDER", sortOrder);
 
         // Get the list of movies for the selected category
         movies = getMoviesForCategory(category);
@@ -37,6 +53,52 @@ public class MovieListActivity extends AppCompatActivity implements MovieListAda
         movieAdapter = new MovieListAdapter(this, movies, this);
         movieListRecyclerView.setAdapter(movieAdapter);
         movieListRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+    @Override
+    public void onBackPressed() {
+        onPause();
+        super.onBackPressed();
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("sort_order", sortOrder);
+        Log.i("on pause sort",sortOrder);
+
+        editor.apply();
+        movieAdapter.notifyDataSetChanged();
+        Log.i("on pause revoked","gghfhdfhdfg");
+    }
+    final Handler handler = new Handler();
+    final Runnable saveRunnable = new Runnable() {
+        @Override
+        public void run() {
+            onPause();
+        }
+    };
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+// Use the existing sharedPreferences object
+        Log.i("SORT ORDER", sortOrder);
+        Log.i("SHARED PREFERENCES", sharedPreferences.toString());
+        Collections.sort(movies, new Comparator<Movie>() {
+            @Override
+            public int compare(Movie m1, Movie m2) {
+                if (sortOrder.equals("title")) {
+                    return m1.getTitle().compareTo(m2.getTitle());
+                } else if (sortOrder.equals("rating")) {
+                    return Double.compare(m2.getRating(), m1.getRating());
+                } else if (sortOrder.equals("date")) {
+                    return m1.getReleaseDate().compareTo(m2.getReleaseDate());
+                } else {
+                    return 0;
+                }
+            }
+        });
+        movieAdapter.notifyDataSetChanged();
     }
 
     private List<Movie> getMoviesForCategory(String category) {
@@ -94,8 +156,15 @@ public class MovieListActivity extends AppCompatActivity implements MovieListAda
 
         return movies;
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.movie_list_activity, menu);
+        return true;
+    }
     // Implement the onMovieClick method of the MovieClickListener interface
     @Override
+
     public void onMovieClick(int position) {
         // Get the selected movie from the movieList
         Movie selectedMovie = movies.get(position);
@@ -107,45 +176,69 @@ public class MovieListActivity extends AppCompatActivity implements MovieListAda
         startActivity(intent);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.movie_list_activity, menu);
-        return true;
-    }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+
+
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
+
         switch (id) {
             case R.id.sort_by_title:
+                // Sort movies by title
                 Collections.sort(movies, new Comparator<Movie>() {
                     @Override
                     public int compare(Movie m1, Movie m2) {
                         return m1.getTitle().compareTo(m2.getTitle());
                     }
                 });
-                break;
-            case R.id.sort_by_date:
+
+                // Save sort order to SharedPreferences
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("sort_order", "title");
+                editor.apply();
+
+                // Notify the adapter that the data has changed
+                movieAdapter.notifyDataSetChanged();
+                return true;
+
+            case R.id.sort_by_rating:
+                // Sort movies by rating
                 Collections.sort(movies, new Comparator<Movie>() {
                     @Override
                     public int compare(Movie m1, Movie m2) {
-                        // Check for null values
-                        if (m1.getReleaseDate() == null && m2.getReleaseDate() == null) {
-                            return 0;
-                        } else if (m1.getReleaseDate() == null) {
-                            return 1;
-                        } else if (m2.getReleaseDate() == null) {
-                            return -1;
-                        } else {
-                            // Compare the release dates of the movies using the compareTo() method of the String class
-                            return m1.getReleaseDate().compareTo(m2.getReleaseDate());
-                        }
+                        return Double.compare(m2.getRating(), m1.getRating());
                     }
-                });                break;
+                });
+
+                // Save sort order to SharedPreferences
+                editor = sharedPreferences.edit();
+                editor.putString("sort_order", "rating");
+                editor.apply();
+
+                // Notify the adapter that the data has changed
+                movieAdapter.notifyDataSetChanged();
+                return true;
+
+            case R.id.sort_by_date:
+                // Sort movies by date
+                Collections.sort(movies, new Comparator<Movie>() {
+                    @Override
+                    public int compare(Movie m1, Movie m2) {
+                        return m1.getReleaseDate().compareTo(m2.getReleaseDate());
+                    }
+                });
+
+                // Save sort order to SharedPreferences
+                editor = sharedPreferences.edit();
+                editor.putString("sort_order", "date");
+                editor.apply();
+
+                // Notify the adapter that the data has changed
+                movieAdapter.notifyDataSetChanged();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
-        movieAdapter.notifyDataSetChanged();
-        return true;
-    }
-}
+    }}
