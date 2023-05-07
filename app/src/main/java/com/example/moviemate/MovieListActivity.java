@@ -56,19 +56,15 @@ public class MovieListActivity extends AppCompatActivity implements MovieListAda
     }
     @Override
     public void onBackPressed() {
-        onPause();
+        sortOrder = "rating";
         super.onBackPressed();
     }
     @Override
     protected void onPause() {
         super.onPause();
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("sort_order", sortOrder);
-        Log.i("on pause sort",sortOrder);
-
+        editor.putString("sort_order", sortOrder);  // Save the actual sortOrder
         editor.apply();
-        movieAdapter.notifyDataSetChanged();
-        Log.i("on pause revoked","gghfhdfhdfg");
     }
     final Handler handler = new Handler();
     final Runnable saveRunnable = new Runnable() {
@@ -81,26 +77,20 @@ public class MovieListActivity extends AppCompatActivity implements MovieListAda
     protected void onResume() {
         super.onResume();
 
-// Use the existing sharedPreferences object
-        Log.i("SORT ORDER", sortOrder);
-        Log.i("SHARED PREFERENCES", sharedPreferences.toString());
-        Collections.sort(movies, new Comparator<Movie>() {
-            @Override
-            public int compare(Movie m1, Movie m2) {
-                if (sortOrder.equals("title")) {
-                    return m1.getTitle().compareTo(m2.getTitle());
-                } else if (sortOrder.equals("rating")) {
-                    return Double.compare(m2.getRating(), m1.getRating());
-                } else if (sortOrder.equals("date")) {
-                    return m1.getReleaseDate().compareTo(m2.getReleaseDate());
-                } else {
-                    return 0;
-                }
-            }
-        });
+        // Read the saved sort order
+        sortOrder = sharedPreferences.getString("sort_order", sortOrder);
+
+        // Sort based on the saved sort order
+        if (sortOrder.equals("title")) {
+            // Sort by title
+        } else if (sortOrder.equals("rating")) {
+            // Sort by rating
+        } else if (sortOrder.equals("date")) {
+            // Sort by date
+        }
+
         movieAdapter.notifyDataSetChanged();
     }
-
     private List<Movie> getMoviesForCategory(String category) {
         List<Movie> movies = new ArrayList<>();
 
